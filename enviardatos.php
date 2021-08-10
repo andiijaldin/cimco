@@ -1,19 +1,27 @@
 <?php
-
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\ServiceAccount;
-
-
-$conexion = mysql_connect("db4free.net", "usuariocimco", "cimco123");
-mysql_select_db("bddcimcomy", $conexion);
-mysql_query("SET NAMES 'utf8'");
-
-$dato = $_POST ['dato'];
  
 
-mysql_query("INSERT INTO  `prueba` (`dato`, `fecha` ) VALUES ( '$dato', CURRENT_TIMESTAMP );");
+$mysqli = new mysqli('db4free.net', 'usuariocimco', 'cimco123', 'bddcimcomy');
+$mysqli->set_charset("utf8");
 
-mysql_close();
 
-echo "Datos ingresados correctamente.";
+    if(!$mysqli)
+    {
+        echo "<h3>No se ha podido conectar PHP - MySQL, verifique sus datos.</h3><hr><br>";
+    }
+    else
+    {
+        $dato = $_POST ['dato'];
+       /* $var_resultado = $obj_conexion->query("INSERT INTO  `prueba` (`dato`, `fecha` ) VALUES ( '$dato', CURRENT_TIMESTAMP );");*/
+       if( $mysqli->query("INSERT INTO  `prueba` (`dato`, `fecha` ) VALUES ( '$dato', CONVERT_TZ(NOW(), @@session.time_zone, '-04:00'));"))
+       {
+
+        echo "Datos ingresados correctamente.";
+       }
+       
+    }
+    
+
+ 
+ 
 ?>
